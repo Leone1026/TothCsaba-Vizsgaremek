@@ -1,4 +1,5 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Story;
 import org.checkerframework.checker.units.qual.A;
 import org.example.AboutPage;
 import org.example.LandingPage;
@@ -40,6 +41,8 @@ public class PaginationTest {
     @Test
     @Order(1)
     @Severity(SeverityLevel.NORMAL)
+    @Story("PaginationTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking If First Page Is Displayed")
     public void CheckFirstPage() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -59,6 +62,8 @@ public class PaginationTest {
     @Test
     @Order(2)
     @Severity(SeverityLevel.NORMAL)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking If Click On Next Button Functions Perfectly")
     public void ClickNextTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -83,6 +88,8 @@ public class PaginationTest {
     @Test
     @Order(3)
     @Severity(SeverityLevel.NORMAL)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking If Click On Last Button Functions Perfectly")
     public void GetLastPageNumberTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -105,6 +112,8 @@ public class PaginationTest {
     @Test
     @Order(4)
     @Severity(SeverityLevel.NORMAL)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking If Click On Previous Button Functions Perfectly")
     public void ClickPreviousTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -135,6 +144,8 @@ public class PaginationTest {
     @Test
     @Order(5)
     @Severity(SeverityLevel.NORMAL)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking If Click On First Button Functions Perfectly")
     public void GetFirstPageNumberTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -157,6 +168,8 @@ public class PaginationTest {
     @Test
     @Order(6)
     @Severity(SeverityLevel.NORMAL)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking If Click On First Page Button Directs To First Page")
     public void ClickFirstPageTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -184,6 +197,8 @@ public class PaginationTest {
     @Test
     @Order(7)
     @Severity(SeverityLevel.NORMAL)
+    @Story("PaginationTest")
+    @Tag("PortfolioPage")
     @DisplayName("Get The Maximum Number Of Pages With Another Method")
     public void GetLastPageNumberTest2() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -204,6 +219,8 @@ public class PaginationTest {
     @Test
     @Order(8)
     @Severity(SeverityLevel.MINOR)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking if Next Button is enabled on Last Page")
     public void CheckNextButtonOnLastPageTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -226,6 +243,8 @@ public class PaginationTest {
     @Test
     @Order(9)
     @Severity(SeverityLevel.MINOR)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking if Last Button is enabled on Last Page")
     public void CheckLastButtonOnLastPageTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -248,6 +267,8 @@ public class PaginationTest {
     @Test
     @Order(10)
     @Severity(SeverityLevel.MINOR)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking if Previous Button is enabled on First Page")
     public void CheckPreviousButtonOnFirstPageTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -270,6 +291,8 @@ public class PaginationTest {
     @Test
     @Order(11)
     @Severity(SeverityLevel.MINOR)
+    @Story("ButtonTest")
+    @Tag("PortfolioPage")
     @DisplayName("Checking if First Button is enabled on First Page")
     public void CheckFirstButtonOnFirstPageTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -289,10 +312,11 @@ public class PaginationTest {
         Assertions.assertFalse(actual);
     }
 
-
     @Test
     @Order(12)
     @Severity(SeverityLevel.NORMAL)
+    @Story("PaginationTest")
+    @Tag("PortfolioPage")
     @DisplayName("Getting The Number Of Products While Iterating Over Pages")
     public void PaginationTest() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -313,6 +337,8 @@ public class PaginationTest {
     @Test
     @Order(13)
     @Severity(SeverityLevel.NORMAL)
+    @Story("PaginationTest")
+    @Tag("PortfolioPage")
     @DisplayName("Getting The Name Of Products While Iterating Over Pages")
     public void PaginationTest2() throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -331,5 +357,9 @@ public class PaginationTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    @AfterEach
+    public void TearDown () {
+        driver.quit();
+    }
 
 }

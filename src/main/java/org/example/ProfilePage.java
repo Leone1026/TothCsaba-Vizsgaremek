@@ -16,6 +16,8 @@ public class ProfilePage extends BasePage{
 
     public final By BUTTON_DELETEACCOUNT = By.xpath("//button[@onclick='showRealDeleteAccBtn()']");
 
+    public final By BUTTON_DELETE_CONFIRMATION = By.id("delete-account-btn");
+
     public final By ALERT_EDITED = By.id("edit-alert");
     //"Profile Edited!"
     public void ModifyProfile(String name, String bio, String phone) {
@@ -28,4 +30,10 @@ public class ProfilePage extends BasePage{
     public boolean EditAlertIsDisplayed () {
         return(driver.findElement(ALERT_EDITED).isDisplayed());
     }
+
+    public void DeleteProfile() {
+        driver.findElement(BUTTON_DELETEACCOUNT).click();
+        driver.findElement(BUTTON_DELETE_CONFIRMATION).click();
+    }
+
 }

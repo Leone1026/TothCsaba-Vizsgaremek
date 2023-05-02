@@ -1,6 +1,7 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.example.LandingPage;
 import org.example.LoginPage;
 import org.junit.jupiter.api.*;
@@ -55,6 +56,8 @@ public class LoginRegisterTests {
     @Test
     @Order(1)
     @Severity(SeverityLevel.CRITICAL)
+    @Story("RegisterTest")
+    @Tag("LoginPage")
     @DisplayName("Register without parameters")
     public void RegisterTest() {
         loginPage = new LoginPage(driver);
@@ -68,6 +71,8 @@ public class LoginRegisterTests {
     @Test
     @Order(2)
     @Severity(SeverityLevel.CRITICAL)
+    @Story("RegisterTest")
+    @Tag("LoginPage")
     @DisplayName("Register with invalid e-mail addresses")
     public void RegisterTest2() {
         loginPage = new LoginPage(driver);
@@ -115,6 +120,8 @@ public class LoginRegisterTests {
     @Test
     @Order(3)
     @Severity(SeverityLevel.NORMAL)
+    @Story("LoginTest")
+    @Tag("LoginPage")
     @DisplayName("Register with username and password and login with registered parameters")
     public void RegisterAndLoginTest1 () {
         loginPage = new LoginPage(driver);
@@ -135,6 +142,8 @@ public class LoginRegisterTests {
     @Test
     @Order(4)
     @Severity(SeverityLevel.NORMAL)
+    @Story("LoginTest")
+    @Tag("LoginPage")
     @DisplayName("Register with username and password and try to login with wrong password")
     public void RegisterAndLoginTest2 () {
         loginPage = new LoginPage(driver);
@@ -154,6 +163,8 @@ public class LoginRegisterTests {
     @Test
     @Order(5)
     @Severity(SeverityLevel.NORMAL)
+    @Story("LoginTest")
+    @Tag("LoginPage")
     @DisplayName("Try to login with wrong username")
     public void LoginTest1 () {
         loginPage = new LoginPage(driver);
@@ -169,6 +180,8 @@ public class LoginRegisterTests {
     @Disabled
     @Order(6)
     @Severity(SeverityLevel.NORMAL)
+    @Story("LoginTest")
+    @Tag("LoginPage")
     @DisplayName("Try to login with valid username and password")
     public void LoginTest2 () {
         loginPage = new LoginPage(driver);
@@ -181,6 +194,24 @@ public class LoginRegisterTests {
         Assertions.assertEquals("https://lennertamas.github.io/roxo/landing.html", landingPage.GetURL());
     }
 
+    @Test
+    @Order(7)
+    @Severity(SeverityLevel.NORMAL)
+    @Story("LoginTest")
+    @Tag("LandingPage")
+    @DisplayName("Login with valid username and password and logout")
+    public void LogoutTest () {
+        loginPage = new LoginPage(driver);
+        landingPage = new LandingPage(driver);
+        String validUserName = "beckz";
+        String validPassword = "30y123";
+        loginPage.Navigate();
+        loginPage.AcceptTermsAndConditions();
+        loginPage.LoginFunction(validUserName, validPassword);
+        Assertions.assertEquals("https://lennertamas.github.io/roxo/landing.html", landingPage.GetURL());
+        landingPage.clickOnLogout();
+        Assertions.assertEquals("https://lennertamas.github.io/roxo/index.html", landingPage.GetURL());
+    }
 
    @AfterEach
    public void TearDown () {

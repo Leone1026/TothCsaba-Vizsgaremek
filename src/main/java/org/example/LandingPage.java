@@ -36,6 +36,8 @@ public class LandingPage extends BasePage {
 
     public final By PROFILE_BUTTON = By.id("profile-btn");
 
+    public final By LOGOUT_BUTTON = By.xpath("//a[@onclick='logout()']");
+
     public String GetURL() {
         return (driver.getCurrentUrl());
     }
@@ -57,6 +59,10 @@ public class LandingPage extends BasePage {
 
     public void GoToProfile() {
         driver.findElement(PROFILE_BUTTON).click();
+    }
+
+    public void clickOnLogout() {
+        driver.findElement(LOGOUT_BUTTON).click();
     }
 
     public void writeCommentsToFile(List<Map<String, String>> commentList, String filePath) throws IOException {

@@ -1,19 +1,16 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.example.*;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.Duration;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +37,7 @@ public class DataEntryTest {
     @Test
     @Order(1)
     @Severity(SeverityLevel.CRITICAL)
+    @Tag("MessagePage")
     @DisplayName("Send message without parameters")
     public void EmptyMessageTest() {
         loginPage = new LoginPage(driver);
@@ -57,6 +55,7 @@ public class DataEntryTest {
         Duration waitTime = Duration.ofSeconds(10);
         WebDriverWait wait = new WebDriverWait(driver, waitTime);
         Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        Allure.addAttachment("Screenshot", new ByteArrayInputStream(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES)));
         String alertText = alert.getText();
         String expected = "Message sent!";
         Assertions.assertNotEquals(expected, alertText);
@@ -66,6 +65,7 @@ public class DataEntryTest {
     @Test
     @Order(2)
     @Severity(SeverityLevel.NORMAL)
+    @Tag("MessagePage")
     @DisplayName("Send message with parameters")
     public void ValidMessageTest() {
         loginPage = new LoginPage(driver);
@@ -104,12 +104,14 @@ public class DataEntryTest {
             result = cookie.getName() + ": " + cookie.getValue();
             Assertions.assertEquals("tandc: true", result);
         }
-
     }
+
 
     @Test
     @Order(3)
     @Severity(SeverityLevel.NORMAL)
+    @Story("RegisterTest")
+    @Tag("LoginPage")
     @DisplayName("Register more than one use from file")
     public void SerialRegisterTest () throws IOException {
         loginPage = new LoginPage(driver);
@@ -118,7 +120,7 @@ public class DataEntryTest {
         loginPage.AcceptTermsAndConditions();
         loginPage.ClickOnRegisterButton();
         SoftAssert softAssert = new SoftAssert();
-        BufferedReader reader = new BufferedReader(new FileReader("users.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("Users.txt"));
         String userData;
         while ((userData = reader.readLine()) != null) {
             String[] values = userData.split(",");
@@ -134,9 +136,12 @@ public class DataEntryTest {
         softAssert.assertAll();
     }
 
+
     @Test
     @Order(4)
     @Severity(SeverityLevel.NORMAL)
+    @Story("RegisterTest")
+    @Tag("ProfilePage")
     @DisplayName("Register, then modify profile")
     public void RegisterAndProfileModificationTest () {
         loginPage = new LoginPage(driver);
@@ -160,17 +165,54 @@ public class DataEntryTest {
         String phone = "555-8765-2914";
         profilePage.ModifyProfile(name, bio, phone);
         Assertions.assertTrue(profilePage.EditAlertIsDisplayed());
-        /*driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         Set<Cookie> cookies = driver.manage().getCookies();
-                //String result = null;
                 String expected = "aron: {\"username\":\"aron\",\"password\":\"aaron99\"," +
                         "\"email\":\"aaron.mail@gmail.com\",\"description\":\"testaron\"," +
                         "\"name\":\"Aaron Norris\",\"bio\":\"I was born in 1987.\"," +
                         "\"phoneNumber\":\"555-8765-2914\"}";
-                for (Cookie cookie : cookies) {
-                    String result = cookie.getName() + ": " + cookie.getValue();
-                    Assertions.assertEquals("tandc: true", result);
-                }*/
+        boolean cookieCheck = false;
+        for (Cookie cookie : cookies) {
+            String result = cookie.getName() + ": " + cookie.getValue();
+            if (result.equals(expected)) {
+                cookieCheck = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(cookieCheck, "Expected cookie not found.");
     }
+
+    @Test
+    @Order(5)
+    @Severity(SeverityLevel.NORMAL)
+    @Story("RegisterTest")
+    @Tag("ProfilePage")
+    @DisplayName("Register, then delete profile")
+    public void RegisterAndDeleteProfileTest () {
+        loginPage = new LoginPage(driver);
+        landingPage = new LandingPage(driver);
+        profilePage = new ProfilePage(driver);
+        String username = "Silberman";
+        String password = "silberman45";
+        loginPage.Navigate();
+        loginPage.AcceptTermsAndConditions();
+        loginPage.ClickOnRegisterButton();
+        loginPage.RegisterBasic(username,password,"","");
+        Assertions.assertTrue(loginPage.RegisterAlertIsDisplayed());
+        loginPage.LoginFromRegister();
+        loginPage.LoginFunction(username, password);
+        Assertions.assertEquals("https://lennertamas.github.io/roxo/landing.html", landingPage.GetURL());
+        landingPage.GoToProfile();
+        profilePage.DeleteProfile();
+        Assertions.assertEquals("https://lennertamas.github.io/roxo/index.html", landingPage.GetURL());
+        loginPage.LoginFunction(username, password);
+        Assertions.assertTrue(loginPage.LoginAlertIsDisplayed());
+    }
+
+    @AfterEach
+    public void TearDown () {
+        driver.quit();
+    }
+
 
 }

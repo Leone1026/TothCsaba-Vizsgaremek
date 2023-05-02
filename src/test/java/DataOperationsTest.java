@@ -38,6 +38,7 @@ public class DataOperationsTest {
     @Test
     @Order(1)
     @Severity(SeverityLevel.NORMAL)
+    @Tag("AboutPage")
     @DisplayName("Read Expertise Data On About Page Test And Compare With String")
     public void DataReadTest1 () {
         loginPage = new LoginPage(driver);
@@ -60,6 +61,7 @@ public class DataOperationsTest {
     @Test
     @Order(2)
     @Severity(SeverityLevel.NORMAL)
+    @Tag("AboutPage")
     @DisplayName("Read Members Data On About Page Test And Compare With List")
     public void DataReadTest2 () throws InterruptedException {
         loginPage = new LoginPage(driver);
@@ -86,6 +88,7 @@ public class DataOperationsTest {
     @Test
     @Order(4)
     @Severity(SeverityLevel.NORMAL)
+    @Tag("LandingPage")
     @DisplayName("Read Comments And Related Data On About Page And Compare With File")
     public void DataReadTest3 () throws InterruptedException, IOException {
         loginPage = new LoginPage(driver);
@@ -100,6 +103,8 @@ public class DataOperationsTest {
         landingPage.writeCommentsToFile(actual, "CollectedComments.txt");
         List<Map<String, String>>expected = landingPage.readCommentsFile();
         Assertions.assertEquals(expected, actual);
+        File file = new File("CollectedComments.txt");
+        Assertions.assertTrue(file.exists());
     }
 
     @AfterEach
