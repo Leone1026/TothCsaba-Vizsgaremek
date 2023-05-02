@@ -1,0 +1,6 @@
+"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
+"","","RegisterTest","2","0","3","0","0"
+"","","","0","10","5","0","0"
+"","","LoginTest","0","0","4","1","0"
+"","","PaginationTest","0","0","4","0","0"
+"","","ButtonTest","1","3","5","0","0"
