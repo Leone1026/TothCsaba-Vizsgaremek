@@ -1,8 +1,5 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.qameta.allure.Allure;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.example.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
@@ -37,9 +34,11 @@ public class DataEntryTest {
     @Test
     @Order(1)
     @Severity(SeverityLevel.CRITICAL)
+    @Story("DataEntryTest")
     @Tag("MessagePage")
-    @DisplayName("Send message without parameters")
-    public void EmptyMessageTest() {
+    @DisplayName("TC07 - Send message without parameters")
+    @Description("Verify that website doesn't display 'Message Sent!' alert, if user doesn't fill out any field")
+    public void EmptyMessageTest() throws WebDriverException {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);
         messagePage = new MessagePage(driver);
@@ -55,7 +54,6 @@ public class DataEntryTest {
         Duration waitTime = Duration.ofSeconds(10);
         WebDriverWait wait = new WebDriverWait(driver, waitTime);
         Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-        Allure.addAttachment("Screenshot", new ByteArrayInputStream(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES)));
         String alertText = alert.getText();
         String expected = "Message sent!";
         Assertions.assertNotEquals(expected, alertText);
@@ -65,8 +63,10 @@ public class DataEntryTest {
     @Test
     @Order(2)
     @Severity(SeverityLevel.NORMAL)
+    @Story("DataEntryTest")
     @Tag("MessagePage")
-    @DisplayName("Send message with parameters")
+    @DisplayName("TC08 - Send message with parameters")
+    @Description("Verify that website sends message, if all required fields are filled out")
     public void ValidMessageTest() {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);
@@ -110,9 +110,10 @@ public class DataEntryTest {
     @Test
     @Order(3)
     @Severity(SeverityLevel.NORMAL)
-    @Story("RegisterTest")
+    @Story("DataEntryTest")
     @Tag("LoginPage")
-    @DisplayName("Register more than one use from file")
+    @DisplayName("TC09 - Register more than one user from file")
+    @Description("Verify that user can register more than one user with valid data")
     public void SerialRegisterTest () throws IOException {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);
@@ -140,9 +141,10 @@ public class DataEntryTest {
     @Test
     @Order(4)
     @Severity(SeverityLevel.NORMAL)
-    @Story("RegisterTest")
+    @Story("DataModificationTest")
     @Tag("ProfilePage")
-    @DisplayName("Register, then modify profile")
+    @DisplayName("TC10 - Register, then modify profile")
+    @Description("Verify that user can modify profile after registration")
     public void RegisterAndProfileModificationTest () {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);
@@ -167,10 +169,9 @@ public class DataEntryTest {
         Assertions.assertTrue(profilePage.EditAlertIsDisplayed());
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         Set<Cookie> cookies = driver.manage().getCookies();
-                String expected = "aron: {\"username\":\"aron\",\"password\":\"aaron99\"," +
-                        "\"email\":\"aaron.mail@gmail.com\",\"description\":\"testaron\"," +
-                        "\"name\":\"Aaron Norris\",\"bio\":\"I was born in 1987.\"," +
-                        "\"phoneNumber\":\"555-8765-2914\"}";
+            String expected = username + ": {\"username\":\"" + username + "\",\"password\":\"" + password + "\"," +
+                    "\"email\":\"" + email + "\",\"description\":\"" + description + "\"," +
+                    "\"name\":\"" + name + "\",\"bio\":\"" + bio + "\",\"phoneNumber\":\"" + phone + "\"}";
         boolean cookieCheck = false;
         for (Cookie cookie : cookies) {
             String result = cookie.getName() + ": " + cookie.getValue();
@@ -185,9 +186,10 @@ public class DataEntryTest {
     @Test
     @Order(5)
     @Severity(SeverityLevel.NORMAL)
-    @Story("RegisterTest")
+    @Story("DataModificationTest")
     @Tag("ProfilePage")
-    @DisplayName("Register, then delete profile")
+    @DisplayName("TC11 - Register, then delete profile")
+    @Description("Verify that user can delete the profile after registration")
     public void RegisterAndDeleteProfileTest () {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);

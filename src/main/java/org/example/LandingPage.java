@@ -65,40 +65,77 @@ public class LandingPage extends BasePage {
         driver.findElement(LOGOUT_BUTTON).click();
     }
 
+    // This method writes a list of comments to a file with the specified file path.
+    // Each comment is represented by a map containing the comment author's name,
+    // occupation and comment message.
     public void writeCommentsToFile(List<Map<String, String>> commentList, String filePath) throws IOException {
+
+        // create a new FileWriter instance for the specified file
         FileWriter writer = new FileWriter(filePath);
+
+        // iterate through each comment in the list and write its details to the file
         for (Map<String, String> comment : commentList) {
             writer.write("Name: " + comment.get("Name") + "\n");
             writer.write("Occupation: " + comment.get("Occupation") + "\n");
             writer.write("Comment: " + comment.get("Comment") + "\n\n");
         }
+
+        // close the writer
         writer.close();
     }
 
-    public List<Map<String, String>> getComments() throws InterruptedException, IOException {
+    // This method retrieves the comments from the opinion area of the Landing page.
+    // It returns a list of maps, where each map contains the name, occupation,
+    // and comment of a person who left an opinion.
+    public List<Map<String, String>> getComments() throws InterruptedException {
+
+        // Create an empty list (commentlist) to store the comment data.
         List<Map<String, String>> commentList = new ArrayList<>();
+
+        // Scroll to the opinion area of the Landing page.
         scrollToElement(OPINION_AREA);
+
+        // Find all the opinion elements on the Landing page.
         List<WebElement> elements = driver.findElements(OPINIONS_PERSONS);
+
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+
+        // Iterate through each opinion element and extract the name, occupation, and comment.
         for (WebElement element : elements) {
             String name = element.findElement(By.xpath(".//div[2]/h5")).getText();
             String occupation = element.findElement(By.xpath(".//div[2]/p")).getText();
             String comment = element.findElement(By.xpath(".//p[@class='site-testimonial-item-body']")).getText();
+
+            // Store the data in a map and add it to the commentlist.
             Map<String, String> person = new HashMap<>();
             person.put("Occupation", occupation);
             person.put("Comment", comment);
             person.put("Name", name);
             commentList.add(person);
         }
+
+        // Return the list of comment data.
         return commentList;
     }
 
+    // This method reads comments from a file and returns them as a list of maps,
+    // where each map represents a comment and contains
+    // the keys "Name", "Occupation", and "Comment".
     public List<Map<String, String>> readCommentsFile() throws IOException {
+
+        // Create a new list to store the comments
         List<Map<String, String>> commentsFromFiles = new ArrayList<>();
+
+        // Open the file for reading using a try-catch block, which ensures
+        // that the file is closed properly after the process.
         try (BufferedReader br = new BufferedReader(new FileReader("CommentList.txt"))) {
             String line;
+
+            // Read each line of the file and split it into parts using the "|" character
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
+
+                // Create a new map to represent the comment and add it to the list
                 Map<String, String> map = new HashMap<>();
                 map.put("Name", parts[0]);
                 map.put("Occupation", parts[1]);
@@ -108,6 +145,8 @@ public class LandingPage extends BasePage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Return the list of comments
         return commentsFromFiles;
     }
 }

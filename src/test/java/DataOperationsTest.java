@@ -1,10 +1,11 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.example.AboutPage;
 import org.example.LandingPage;
 import org.example.LoginPage;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.*;
@@ -39,7 +40,9 @@ public class DataOperationsTest {
     @Order(1)
     @Severity(SeverityLevel.NORMAL)
     @Tag("AboutPage")
-    @DisplayName("Read Expertise Data On About Page Test And Compare With String")
+    @Story("DataReadTest")
+    @DisplayName("TC12 - Read Expertise Data On About Page And Compare With String")
+    @Description("Verify that Expertise Data matches the predetermined data")
     public void DataReadTest1 () {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);
@@ -52,6 +55,7 @@ public class DataOperationsTest {
         Assertions.assertEquals("https://lennertamas.github.io/roxo/landing.html", landingPage.GetURL());
         landingPage.GoToAbout();
         String actual = aboutPage.getExpertiseData();
+        Allure.addAttachment("TC12 - Screenshot", new ByteArrayInputStream(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES)));
         String expected = "Customer Experience Design, Digital Products, Development, Campaign & Content, " +
                 "Employer Branding, Animation & Motion Graphics, Packaging & Product Design, " +
                 "Retail & Spacial, Print & Editorial Design, Concept/Text, Information Design";
@@ -62,7 +66,9 @@ public class DataOperationsTest {
     @Order(2)
     @Severity(SeverityLevel.NORMAL)
     @Tag("AboutPage")
-    @DisplayName("Read Members Data On About Page Test And Compare With List")
+    @Story("DataReadTest")
+    @DisplayName("TC13 - Read Members Data On About Page And Compare With List")
+    @Description("Verify that Members Data matches the predetermined data")
     public void DataReadTest2 () throws InterruptedException {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);
@@ -75,6 +81,7 @@ public class DataOperationsTest {
         Assertions.assertEquals("https://lennertamas.github.io/roxo/landing.html", landingPage.GetURL());
         landingPage.GoToAbout();
         List<String> actual = aboutPage.getMembers();
+        Allure.addAttachment("TC13 - Screenshot", new ByteArrayInputStream(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES)));
         List<String> expected = new ArrayList<>();
         expected.add("PABLO ESCOBAR - Creative Director");
         expected.add("MONTINO RIAU - Product Manager");
@@ -86,10 +93,12 @@ public class DataOperationsTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     @Severity(SeverityLevel.NORMAL)
     @Tag("LandingPage")
-    @DisplayName("Read Comments And Related Data On About Page And Compare With File")
+    @Story("DataRead & DataWrite Test")
+    @DisplayName("TC14 - Read Comments And Related Data On About Page And Compare With File")
+    @Description("Verify that Comments and related Data matches the predetermined data, and write data to file")
     public void DataReadTest3 () throws InterruptedException, IOException {
         loginPage = new LoginPage(driver);
         landingPage = new LandingPage(driver);
