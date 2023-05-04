@@ -187,7 +187,9 @@ public class PortfolioPage extends BasePage {
             body.sendKeys(Keys.PAGE_DOWN);
         }
         driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+        Thread.sleep(3000);
         scrollToElement(PAGINATION_AREA_ABOVE);
+        Thread.sleep(3000);
         driver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
         driver.findElement(LAST_BUTTON).click();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);

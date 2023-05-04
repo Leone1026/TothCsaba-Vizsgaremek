@@ -74,7 +74,8 @@ public class LoginPage extends BasePage{
         driver.findElement(REGISTER_CONFIRM_BUTTON).click();
     }
 
-    // This method checks if the registration alert message is displayed and returns the result
+    // This method checks if the registration alert message (user registered)
+    // is displayed and returns the result
     public boolean RegisterAlertIsDisplayed () {
         return(driver.findElement(REGISTER_ALERT).isDisplayed());
     }
